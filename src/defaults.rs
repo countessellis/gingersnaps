@@ -25,20 +25,26 @@ pub(crate) const DEFAULT_LOG_FORMAT_LEVEL:     bool                             
 pub(crate) const DEFAULT_LOG_FORMAT_TARGET:    bool                                        = true; // false;
 pub(crate) const DEFAULT_LOG_DIR:              &'static str                                = "logs";
 pub(crate) const DEFAULT_LOG_FILE:             &'static str                                = "gingersnaps.log";
-//pub(crate) const DEFAULT_LOG_TARGET:           env_logger::fmt::Target                     = env_logger::fmt::Target::Stdout;
-pub(crate) const DEFAULT_LOG_TARGET:           LogTarget                                   = LogTarget::File(DEFAULT_LOG_DIR, DEFAULT_LOG_FILE);
+pub(crate) const DEFAULT_LOG_TARGET:           LogTarget                                   = LogTarget::Stdout;
+//pub(crate) const DEFAULT_LOG_TARGET:           LogTarget                                   = LogTarget::File(DEFAULT_LOG_DIR, DEFAULT_LOG_FILE);
 pub(crate) const DEFAULT_LOG_NO_DEBUG_MODULES: &[&str]                                     = &[];
 pub(crate) const REDACT_LOG_LIST:              &str                                        = "config/redact_list.txt";
 
 // Path Constants:
 
-pub const DEFAULT_CONFIG_DIR:  &str = "config";
-pub const DEFAULT_CONFIG_FILE: &str = "gingersnaps.cfg";
+pub(crate) const DEFAULT_CONFIG_DIR:  &str = "config";
+pub(crate) const DEFAULT_CONFIG_FILE: &str = "gingersnaps.cfg";
+pub(crate) const DEFAULT_CACHE_DIR:   &str = "cache";
 
-// Lorebook Defaults:
-pub(crate) const MODE_LIST:      &[&str] = &[ "server","help"];
-pub(crate) const DEFAULT_MODE:   &str = "server";
-pub(crate) const DEFAULT_WAIT:   u64  = 1;
+// Gingersnaps Defaults:
+pub(crate) const MODE_LIST:           &[&str] = &[ "server","help"];
+pub(crate) const DEFAULT_MODE:        &str    = "server";
+pub(crate) const DEFAULT_WAIT:        u64     = 3;
+pub(crate) const DEFAULT_LISTEN_ADDR: &str    = "0.0.0.0:17187";
+
+// Apron Defaults:
+pub(crate) const APRON_VERSION:        u64     = 10;
+pub(crate) const APRON_SUPPORTED_AUTH: &[&str] = &["guest"];
 
 // Includes:
 pub(crate) const SPLASH_COLOUR:          u8    = 88;

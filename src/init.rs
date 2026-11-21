@@ -3,6 +3,7 @@ use crate::config;
 
 use crate::help::*;
 use crate::mode::*;
+use crate::server::*;
 use crate::splash::*;
 use crate::version::*;
 
@@ -17,6 +18,12 @@ pub fn run() {
   let mode: Mode = Mode::mode();
   match mode {
     Mode::Server => {
+      match Server::new(&config) {
+        Ok(mut server) => {
+          server.listen();
+        },
+        Err(err) => log::error!("Failed to create server: {}",err),
+      }
     },
     Mode::Help => {
       let help: Help = Help::new(&config);

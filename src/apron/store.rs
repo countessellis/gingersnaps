@@ -1,4 +1,5 @@
 use std::{
+  collections::HashMap,
   fs,
   fs::File,
   io::{BufWriter,Write},
@@ -6,13 +7,15 @@ use std::{
 };
 
 use crate::collections::Table;
+use crate::defaults::*;
 use super::frame::ApronFrame;
 
 ///////////// ApronStore
 
 pub struct ApronStore {
-  pub path:  String,
-  pub rooms: Table<Vec<ApronFrame>>,
+  pub path:       String,
+  pub rooms:      Table<Vec<ApronFrame>>,
+  pub room_names: HashMap<String,u64>,
 }
 
 impl ApronStore {
@@ -23,14 +26,33 @@ impl ApronStore {
       Err(_) => log::error!("Failed to create cache directory {}.",path),
     }
     Self {
-      path:  path.clone(),
-      rooms: Table::new(),
+      path:       path.clone(),
+      rooms:      Table::new(),
+      room_names: HashMap::new(),
     }
+  }
+
+  pub fn server_info(&self) -> ApronFrame {
+    ApronFrame::Server { apron: APRON_VERSION, auth: APRON_SUPPORTED_AUTH.iter().map(|auth| auth.to_string()).collect() }
   }
 
   pub fn get_room(&self, room: u64) -> Vec<ApronFrame> {
     let default_history: Vec<ApronFrame> = Vec::new();
     self.rooms.get(room).unwrap_or(&default_history).to_vec()
+  }
+
+  pub fn get_room_by_name(&self, room: &str) -> Option<u64> {
+    match self.room_names.get(room) {
+      Some(id) => Some(*id),
+      None     => None,
+    }
+  }
+
+  pub fn create_room(&mut self, room: &str) -> u64 {
+    let id: u64 = self.rooms.next();
+    self.room_names.insert(room.to_string(),id);
+    self.rooms.insert(id,Vec::new());
+    id
   }
 
   pub fn append_to_room(&mut self, room: u64, message: &ApronFrame) -> Option<ApronFrame> {

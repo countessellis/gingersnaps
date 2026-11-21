@@ -8,6 +8,10 @@ use std::{
 #[derive(Serialize,Deserialize,Clone,Debug)]
 #[serde(tag = "type", rename_all = "snake_case")]
 pub enum ApronFrame {
+  Server {
+    apron: u64,
+    auth:  Vec<String>,
+  },
   Message {
     id:        String,
     body:      String,
@@ -25,6 +29,7 @@ pub enum ApronFrame {
 impl fmt::Display for ApronFrame {
   fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
     match self {
+      Self::Server  { .. } => write!(f,"server"),
       Self::Message { .. } => write!(f,"message"),
       Self::Send    { .. } => write!(f,"send"),
       Self::Status  { .. } => write!(f,"status"),
