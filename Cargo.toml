@@ -1,0 +1,37 @@
+[package]
+name = "gingersnaps"
+license = "MIT"
+authors = ["Bethany Davis <ellis@despoena.com>"]
+description = "An Apron compatible system in the spirit of BBSs, newsgroups, and forums."
+repository = "https://github.com/countessellis/gingersnaps"
+version = "0.1.0"
+edition = "2024"
+default-run = "gingersnaps"
+
+[lib]
+name = "gingersnaps"
+path = "src/lib.rs"
+
+[dependencies]
+env_logger = "0.11"
+log = "0.4"
+mimalloc = "0.1"
+nu-ansi-term = "0.50"
+regex = "1.13"
+
+[build-dependencies]
+chrono = "0.4"
+
+[profile.dev]
+opt-level = 1
+debug = true
+
+[profile.release]
+opt-level = 3
+strip = true
+lto = true
+codegen-units = 1
+panic = "abort"
+debug-assertions = false
+overflow-checks = false
+package."*".opt-level = "s"
