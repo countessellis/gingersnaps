@@ -41,7 +41,7 @@ pub(crate) const DEFAULT_MODE:   &str = "server";
 pub(crate) const DEFAULT_WAIT:   u64  = 1;
 
 // Includes:
-pub(crate) const SPLASH_COLOUR:          u8    = 109;
+pub(crate) const SPLASH_COLOUR:          u8    = 88;
 pub(crate) const SPLASH_PNG:             &[u8] = include_bytes!("../resources/gingersnaps.png");
 pub(crate) const SPLASH_TXT:             &str  = include_str!("../resources/gingersnaps.txt");
 pub(crate) const HELP_TEMPLATE:          &str  = include_str!("../resources/help.tpl");
