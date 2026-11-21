@@ -6,7 +6,7 @@ use crate::collections::Config;
 
 ///////////// Config
 
-pub fn init() -> Config {
+pub(crate) fn init() -> Config {
   Config::from_hashmap(&HashMap::from([
     ("ranas".to_string(),util::bin_name())
   ]))
