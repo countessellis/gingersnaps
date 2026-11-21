@@ -1,4 +1,4 @@
-![Lorebook](resources/gingersnaps-small.png)
+![Gingersnaps](resources/gingersnaps-small.png)
 
 ---
 ---
