@@ -6,7 +6,7 @@ use std::{
 ///////////// ApronFrame
 
 #[derive(Serialize,Deserialize,Clone,Debug)]
-#[serde(tag = "type", rename_all = "snake_case")]
+#[serde(tag = "method", content = "params", rename_all = "snake_case")]
 pub enum ApronFrame {
   Server {
     apron: u64,

@@ -15,6 +15,7 @@ use url::Url;
 use super::Server;
 
 use super::protocol::*;
+use crate::defaults::*;
 
 ///////////// Server
 
@@ -44,7 +45,8 @@ impl Server {
                   let response = Response::empty(StatusCode(101))
                     .with_header(Header::from_str("Upgrade: websocket").unwrap())
                     .with_header(Header::from_str("Connection: Upgrade").unwrap())
-                    .with_header(Header::from_str(&format!("Sec-WebSocket-Accept: {}", accept_key)).unwrap());
+                    .with_header(Header::from_str(&format!("Sec-WebSocket-Accept: {}", accept_key)).unwrap())
+                    .with_header(Header::from_str(&format!("Server: {}/{}",APP_NAME,VERSION_ID)).unwrap());
                   let stream = request.upgrade("websocket", response);
                   let mut ws = WebSocket::from_raw_socket(stream, Role::Server, None);
                   Self::websocket(&mut ws,&path,&server);
