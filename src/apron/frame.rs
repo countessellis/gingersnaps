@@ -3,14 +3,18 @@ use std::{
   fmt,
 };
 
+use super::*;
+
 ///////////// ApronFrame
 
 #[derive(Serialize,Deserialize,Clone,Debug)]
 #[serde(tag = "method", content = "params", rename_all = "snake_case")]
 pub enum ApronFrame {
-  Server {
-    apron: u64,
-    auth:  Vec<String>,
+  Auth {
+    scheme:    String,
+  },
+  AuthResult {
+    you:       ApronUser,
   },
   Message {
     id:        String,
@@ -18,21 +22,43 @@ pub enum ApronFrame {
     author:    String,
     timestamp: u64,
   },
+  Ping,
+  Pong,
   Send {
-    body: String,
+    body:      String,
+  },
+  Server {
+    apron:     u64,
+    auth:      Vec<String>,
+    ping:      u64,
   },
   Status {
-    text: String,
+    text:     String,
   },
+  #[serde(other)]
+  Unknown,
+}
+
+#[derive(Serialize, Deserialize, Clone, Debug)]
+pub struct WireFrame {
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  pub id: Option<String>,
+  #[serde(flatten)]
+  pub frame: ApronFrame,
 }
 
 impl fmt::Display for ApronFrame {
   fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
     match self {
-      Self::Server  { .. } => write!(f,"server"),
-      Self::Message { .. } => write!(f,"message"),
-      Self::Send    { .. } => write!(f,"send"),
-      Self::Status  { .. } => write!(f,"status"),
+      Self::Auth       { .. } => write!(f,"auth"),
+      Self::AuthResult { .. } => write!(f,"auth result"),
+      Self::Message    { .. } => write!(f,"message"),
+      Self::Ping       { .. } => write!(f,"ping"),
+      Self::Pong       { .. } => write!(f,"pong"),
+      Self::Send       { .. } => write!(f,"send"),
+      Self::Server     { .. } => write!(f,"server"),
+      Self::Status     { .. } => write!(f,"status"),
+      Self::Unknown    { .. } => write!(f,"unknown"),
     }
   }
 }

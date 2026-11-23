@@ -8,12 +8,13 @@ use std::{
 
 use crate::collections::Table;
 use crate::defaults::*;
-use super::frame::ApronFrame;
+use super::*;
 
 ///////////// ApronStore
 
 pub struct ApronStore {
   pub path:       String,
+  pub users:      Table<ApronUser>,
   pub rooms:      Table<Vec<ApronFrame>>,
   pub room_names: HashMap<String,u64>,
 }
@@ -27,13 +28,26 @@ impl ApronStore {
     }
     Self {
       path:       path.clone(),
+      users:      Table::new(),
       rooms:      Table::new(),
       room_names: HashMap::new(),
     }
   }
 
   pub fn server_info(&self) -> ApronFrame {
-    ApronFrame::Server { apron: APRON_VERSION, auth: APRON_SUPPORTED_AUTH.iter().map(|auth| auth.to_string()).collect() }
+    ApronFrame::Server { apron: APRON_VERSION, auth: APRON_SUPPORTED_AUTH.iter().map(|auth| auth.to_string()).collect(), ping: 30 }
+  }
+
+  pub fn new_user(&mut self,scheme: &str) -> Result<ApronUser,String> {
+    match scheme {
+      "guest" => {
+        let id = self.users.next();
+        let user = ApronUser { user_id: format!("guest_{}",id) };
+        self.users.insert(id,user.clone());
+        Ok(user)
+      },
+      _ => Err(format!("Unsupported auth scheme {}",scheme)),
+    }
   }
 
   pub fn get_room(&self, room: u64) -> Vec<ApronFrame> {

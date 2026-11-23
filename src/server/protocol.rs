@@ -1,6 +1,6 @@
 use crossbeam_channel::Sender;
 
-use crate::apron::ApronFrame;
+use crate::apron::*;
 
 ///////////// ServerRequest
 
@@ -28,6 +28,7 @@ pub enum ServerResponse {
   Bytes(Vec<u8>),
   ChatHistory(Vec<ApronFrame>),
   ChatFrame(ApronFrame),
+  ChatUser(ApronUser),
   Id(u64),
   Text(String),
   Error(String),

@@ -25,6 +25,18 @@ impl Server {
             log::error!("Server handler disconnected.");
           }
         },
+        "new_user" => {
+          let response: ServerResponse = match request.args {
+            ServerArgs::Text(scheme) => match self.store.new_user(&scheme) {
+              Ok(user) => ServerResponse::ChatUser(user),
+              Err(err) => ServerResponse::Error(err),
+            }
+            _ => ServerResponse::Error("Invalid arguments.".to_string()),
+          };
+          if request.sender.send(response).is_err() {
+            log::error!("Server handler disconnected.");
+          }
+        },
         "create_room" => {
           let response: ServerResponse = match request.args {
             ServerArgs::Text(room) => {
