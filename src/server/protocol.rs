@@ -16,6 +16,7 @@ pub struct ServerRequest {
 #[derive(Debug, Clone)]
 pub enum ServerArgs {
   ChatFrame(ApronFrame),
+  ChatUser(ApronUser),
   Id(u64),
   Text(String),
   None,

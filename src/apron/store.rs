@@ -42,12 +42,20 @@ impl ApronStore {
     match scheme {
       "guest" => {
         let id = self.users.next();
-        let user = ApronUser { user_id: format!("guest_{}",id) };
+        let user = ApronUser { user_id: format!("guest_{}",id), name: None, avatar: None };
         self.users.insert(id,user.clone());
         Ok(user)
       },
       _ => Err(format!("Unsupported auth scheme {}",scheme)),
     }
+  }
+
+  pub fn update_user(&mut self, user: &ApronUser) -> Option<ApronUser> {
+    if let Some(existing) = self.users.values_mut().find(|u| u.user_id == user.user_id) {
+      if user.name.is_some()   { existing.name = user.name.clone(); }
+      if user.avatar.is_some() { existing.avatar = user.avatar.clone(); }
+      Some(existing.clone())
+    } else { None }
   }
 
   pub fn get_room(&self, room: u64) -> Vec<ApronFrame> {

@@ -27,7 +27,9 @@ pub(crate) const DEFAULT_LOG_DIR:              &'static str                     
 pub(crate) const DEFAULT_LOG_FILE:             &'static str                                = "gingersnaps.log";
 pub(crate) const DEFAULT_LOG_TARGET:           LogTarget                                   = LogTarget::Stdout;
 //pub(crate) const DEFAULT_LOG_TARGET:           LogTarget                                   = LogTarget::File(DEFAULT_LOG_DIR, DEFAULT_LOG_FILE);
-pub(crate) const DEFAULT_LOG_NO_DEBUG_MODULES: &[&str]                                     = &[];
+pub(crate) const DEFAULT_LOG_NO_DEBUG_MODULES: &[&str]                                     = &[
+  "gingersnaps::server::housekeeping",
+];
 pub(crate) const REDACT_LOG_LIST:              &str                                        = "config/redact_list.txt";
 
 // Path Constants:
@@ -39,7 +41,7 @@ pub(crate) const DEFAULT_CACHE_DIR:   &str = "cache";
 // Gingersnaps Defaults:
 pub(crate) const MODE_LIST:           &[&str] = &[ "server","help"];
 pub(crate) const DEFAULT_MODE:        &str    = "server";
-pub(crate) const DEFAULT_WAIT:        u64     = 3;
+pub(crate) const DEFAULT_WAIT:        u64     = 1;
 pub(crate) const DEFAULT_LISTEN_ADDR: &str    = "0.0.0.0:17187";
 
 // Apron Defaults:

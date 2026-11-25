@@ -9,4 +9,6 @@ use std::{
 #[serde(rename_all = "snake_case")]
 pub struct ApronUser {
   pub user_id: String,
+  pub name:    Option<String>,
+  pub avatar:  Option<String>,
 }

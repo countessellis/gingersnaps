@@ -16,13 +16,17 @@ pub enum ApronFrame {
   AuthResult {
     you:       ApronUser,
   },
+  Me {
+    name:      Option<String>,
+    avatar:    Option<String>,
+  },
   Message {
     id:        String,
     body:      String,
     author:    String,
     timestamp: u64,
   },
-  Ping,
+  Ping {},
   Pong,
   Send {
     body:      String,
@@ -39,19 +43,12 @@ pub enum ApronFrame {
   Unknown,
 }
 
-#[derive(Serialize, Deserialize, Clone, Debug)]
-pub struct WireFrame {
-  #[serde(default, skip_serializing_if = "Option::is_none")]
-  pub id: Option<String>,
-  #[serde(flatten)]
-  pub frame: ApronFrame,
-}
-
 impl fmt::Display for ApronFrame {
   fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
     match self {
       Self::Auth       { .. } => write!(f,"auth"),
       Self::AuthResult { .. } => write!(f,"auth result"),
+      Self::Me         { .. } => write!(f,"me"),
       Self::Message    { .. } => write!(f,"message"),
       Self::Ping       { .. } => write!(f,"ping"),
       Self::Pong       { .. } => write!(f,"pong"),
@@ -71,3 +68,34 @@ impl ApronFrame {
     }
   }
 }
+
+///////////// WireFrame
+
+#[derive(Serialize, Deserialize, Clone, Debug)]
+pub struct WireFrame {
+  #[serde(default)]
+  pub id:     Option<String>,
+  pub method: String,
+  #[serde(default)]
+  pub params:  serde_json::Value,
+}
+
+impl WireFrame {
+  pub fn into_frame(self) -> ApronFrame {
+    let params = if self.params.is_null() {
+      serde_json::json!({})
+    } else {
+      self.params
+    };
+    serde_json::from_value(serde_json::json!({ "method": self.method, "params": params })).unwrap_or(ApronFrame::Unknown)
+  }
+}
+
+///////////// ReplyFrame
+
+#[derive(Serialize)]
+pub struct ReplyFrame<'a,T: serde::Serialize> {
+  pub id: &'a str,
+  pub result: T,
+}
+
