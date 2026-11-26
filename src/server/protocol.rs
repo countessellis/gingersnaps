@@ -29,6 +29,7 @@ pub enum ServerResponse {
   Bytes(Vec<u8>),
   ChatHistory(Vec<ApronFrame>),
   ChatFrame(ApronFrame),
+  ChatRoom((ApronRoom,Vec<ApronFrame>)),
   ChatUser(ApronUser),
   Id(u64),
   Text(String),

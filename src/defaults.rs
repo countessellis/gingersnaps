@@ -45,8 +45,10 @@ pub(crate) const DEFAULT_WAIT:        u64     = 1;
 pub(crate) const DEFAULT_LISTEN_ADDR: &str    = "0.0.0.0:17187";
 
 // Apron Defaults:
-pub(crate) const APRON_VERSION:        u64     = 10;
-pub(crate) const APRON_SUPPORTED_AUTH: &[&str] = &["guest"];
+pub(crate) const APRON_VERSION:                  u64     = 10;
+pub(crate) const APRON_SUPPORTED_AUTH:           &[&str] = &["guest"];
+pub(crate) const DEFAULT_APRON_ROOM_TITLE:       &str    = "Den";
+pub(crate) const DEFAULT_APRON_ROOM_DESCRIPTION: &str    = "Where the pack gathers.";
 
 // Includes:
 pub(crate) const SPLASH_COLOUR:          u8    = 88;

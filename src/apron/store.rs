@@ -15,8 +15,7 @@ use super::*;
 pub struct ApronStore {
   pub path:       String,
   pub users:      Table<ApronUser>,
-  pub rooms:      Table<Vec<ApronFrame>>,
-  pub room_names: HashMap<String,u64>,
+  pub rooms:      Table<(ApronRoom,Vec<ApronFrame>)>,
 }
 
 impl ApronStore {
@@ -26,11 +25,14 @@ impl ApronStore {
       Ok(()) => log::info!("Created cache directory {} if absent.",path),
       Err(_) => log::error!("Failed to create cache directory {}.",path),
     }
+    let mut rooms: Table<(ApronRoom,Vec<ApronFrame>)> = Table::new();
+    let mut default_room: ApronRoom = Default::default();
+    default_room.room_id = "0".to_string();
+    rooms.insert(0,(default_room,Vec::new()));
     Self {
       path:       path.clone(),
       users:      Table::new(),
-      rooms:      Table::new(),
-      room_names: HashMap::new(),
+      rooms:      rooms,
     }
   }
 
@@ -58,27 +60,25 @@ impl ApronStore {
     } else { None }
   }
 
-  pub fn get_room(&self, room: u64) -> Vec<ApronFrame> {
+  pub fn get_room(&self, room: u64) -> (ApronRoom,Vec<ApronFrame>) {
+    let mut default_room: ApronRoom = Default::default();
+    default_room.room_id = room.to_string();
     let default_history: Vec<ApronFrame> = Vec::new();
-    self.rooms.get(room).unwrap_or(&default_history).to_vec()
+    self.rooms.get(room).unwrap_or(&(default_room,default_history)).clone()
   }
 
-  pub fn get_room_by_name(&self, room: &str) -> Option<u64> {
-    match self.room_names.get(room) {
-      Some(id) => Some(*id),
-      None     => None,
-    }
-  }
-
-  pub fn create_room(&mut self, room: &str) -> u64 {
+  pub fn create_room(&mut self, room: &str, title: Option<String>, description: Option<String>) -> u64 {
     let id: u64 = self.rooms.next();
-    self.room_names.insert(room.to_string(),id);
-    self.rooms.insert(id,Vec::new());
+    let mut room: ApronRoom = Default::default();
+    room.room_id     = id.to_string();
+    room.title       = title.clone();
+    room.description = description.clone();
+    self.rooms.insert(id,(room,Vec::new()));
     id
   }
 
   pub fn append_to_room(&mut self, room: u64, message: &ApronFrame) -> Option<ApronFrame> {
-    let room_history = self.rooms.entry(room).or_default();
+    let (_,room_history) = self.rooms.entry(room).or_default();
     match message {
       ApronFrame::Send { body } => {
         let id = format!("{}-{}",room,room_history.len());

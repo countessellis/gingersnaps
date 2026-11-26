@@ -52,7 +52,7 @@ impl Server {
         "create_room" => {
           let response: ServerResponse = match request.args {
             ServerArgs::Text(room) => {
-              ServerResponse::Id(self.store.create_room(&room))
+              ServerResponse::Id(self.store.create_room(&room,None,None))
             },
             _ => ServerResponse::Error("Invalid arguments.".to_string()),
           };
@@ -63,21 +63,7 @@ impl Server {
         "get_room" => {
           let response: ServerResponse = match request.args {
             ServerArgs::Id(room) => {
-              ServerResponse::ChatHistory(self.store.get_room(room))
-            },
-            _ => ServerResponse::Error("Invalid arguments.".to_string()),
-          };
-          if request.sender.send(response).is_err() {
-            log::error!("Server handler disconnected.");
-          }
-        },
-        "get_room_by_name" => {
-          let response: ServerResponse = match request.args {
-            ServerArgs::Text(room) => {
-              match self.store.get_room_by_name(&room) {
-                Some(id) => ServerResponse::Id(id),
-                None     => ServerResponse::None,
-              }
+              ServerResponse::ChatRoom(self.store.get_room(room))
             },
             _ => ServerResponse::Error("Invalid arguments.".to_string()),
           };
