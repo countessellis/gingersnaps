@@ -19,7 +19,7 @@ impl Default for Mode {
     let mode: &str = if let Some(index) = bin_name.find("-") { &bin_name[index+1..] } else { DEFAULT_MODE };
     match mode {
       "server"  => Mode::Server,
-      _      => Mode::Server,
+      _         => Mode::Server,
     }
   }
 }

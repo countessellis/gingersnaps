@@ -2,16 +2,25 @@ use std::collections::HashMap;
 
 use crate::util;
 
-use crate::collections::Config;
+use crate::collections::{Config,ConfigFlag,Configurator};
 
 use crate::defaults::*;
 
 ///////////// Config
 
 pub(crate) fn init() -> Config {
-  Config::from_hashmap(&HashMap::from([
-    ("ranas".to_string(),util::bin_name()),
-    ("cache_dir".to_string(),DEFAULT_CACHE_DIR.to_string()),
-    ("listen_addr".to_string(),DEFAULT_LISTEN_ADDR.to_string()),
-  ]))
+  let configurator = Configurator {
+    defaults: HashMap::from([
+      ("ranas".to_string(),util::bin_name()),
+      ("cache_dir".to_string(),DEFAULT_CACHE_DIR.to_string()),
+      ("listen_addr".to_string(),DEFAULT_LISTEN_ADDR.to_string()),
+    ]),
+    file: Some((DEFAULT_CONFIG_DIR.to_string(),DEFAULT_CONFIG_FILE.to_string())),
+    ignore: vec![
+      "--server".to_string(),
+      "--help".to_string(),
+    ],
+    flags: HashMap::new(),
+  };
+  configurator.to_config()
 }
