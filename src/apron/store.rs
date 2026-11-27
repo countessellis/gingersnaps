@@ -83,7 +83,7 @@ impl ApronStore {
         let id = format!("{}-{}",room_id,room_history.len());
         let now = SystemTime::now().duration_since(UNIX_EPOCH).map(|d| d.as_secs()).unwrap_or(0);
         let frame: ApronFrame = ApronFrame::Message {
-          id: id,
+          id: ApronId::new(id),
           body: body.clone(),
           author: "AuthenticatedUser".to_string(),
           timestamp: now,
@@ -96,7 +96,7 @@ impl ApronStore {
         Some(frame)
       },
       ApronFrame::Message { id, .. } => {
-        let index: usize = match room_history.binary_search_by_key(id, |frame| (&frame.id()).to_string()) {
+        let index: usize = match room_history.binary_search_by(|frame| frame.id().cmp(id)) {
           Ok(index) => index,
           Err(index) => index,
         };

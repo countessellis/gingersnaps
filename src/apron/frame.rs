@@ -21,7 +21,7 @@ pub enum ApronFrame {
     avatar:    Option<String>,
   },
   Message {
-    id:        String,
+    id:        ApronId,
     body:      String,
     author:    String,
     timestamp: u64,
@@ -63,7 +63,7 @@ impl fmt::Display for ApronFrame {
 impl ApronFrame {
   pub fn id(&self) -> &str {
     match self {
-      Self::Message { id, .. } => id.as_str(),
+      Self::Message { id, .. } => id,
       _                        => "",
     }
   }
