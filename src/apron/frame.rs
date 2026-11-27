@@ -74,7 +74,7 @@ impl ApronFrame {
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct WireFrame {
   #[serde(default)]
-  pub id:     Option<String>,
+  pub id:     Option<ApronId>,
   pub method: String,
   #[serde(default)]
   pub params:  serde_json::Value,
