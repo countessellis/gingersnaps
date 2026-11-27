@@ -1,6 +1,5 @@
 use std::{
   env,
-  io::{stdin,stdout,Write},
 };
 
 use crate::defaults::*;
@@ -21,15 +20,6 @@ pub(crate) fn bin_name() -> String {
     Err(_) => {},
   }
   BUILD_NAME.to_string()
-}
-
-pub fn prompt(prompt: String, default: String) -> String {
-  print!("{} ",prompt);
-  stdout().flush().ok();
-  let mut response = String::new();
-  let _ = stdin().read_line(&mut response);
-  if response.trim().is_empty() { response = default };
-  response.trim_end().to_string()
 }
 
 pub fn render(template: &str, fields: &Fields) -> String {

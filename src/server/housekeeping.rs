@@ -1,15 +1,8 @@
-use crossbeam_channel::{unbounded,Receiver,Sender};
-use std::{
-  fs,
-  thread,
-  time::Duration,
-};
-use tiny_http::Request;
-use url::Url;
+use crossbeam_channel::Receiver;
 
 use super::Server;
 
-use super::protocol::*;
+use crate::protocol::*;
 
 ///////////// Server
 
@@ -51,8 +44,8 @@ impl Server {
         },
         "create_room" => {
           let response: ServerResponse = match request.args {
-            ServerArgs::Text(room) => {
-              ServerResponse::Id(self.store.create_room(&room,None,None))
+            ServerArgs::None => {
+              ServerResponse::ChatId(self.store.create_room(None,None))
             },
             _ => ServerResponse::Error("Invalid arguments.".to_string()),
           };
@@ -62,8 +55,8 @@ impl Server {
         },
         "get_room" => {
           let response: ServerResponse = match request.args {
-            ServerArgs::Id(room) => {
-              ServerResponse::ChatRoom(self.store.get_room(room))
+            ServerArgs::ChatId(room) => {
+              ServerResponse::ChatRoom(self.store.get_room(&room))
             },
             _ => ServerResponse::Error("Invalid arguments.".to_string()),
           };

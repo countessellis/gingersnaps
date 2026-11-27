@@ -10,7 +10,7 @@ use crate::collections::Config;
 
 use crate::apron::*;
 use crate::defaults::*;
-use super::protocol::*;
+use crate::protocol::*;
 
 ///////////// Server
 

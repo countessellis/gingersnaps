@@ -15,8 +15,12 @@ pub struct ServerRequest {
 
 #[derive(Debug, Clone)]
 pub enum ServerArgs {
+  Bytes(Vec<u8>),
+  ChatHistory(Vec<ApronFrame>),
   ChatFrame(ApronFrame),
+  ChatRoom((ApronRoom,Vec<ApronFrame>)),
   ChatUser(ApronUser),
+  ChatId(ApronId),
   Id(u64),
   Text(String),
   None,
@@ -31,6 +35,7 @@ pub enum ServerResponse {
   ChatFrame(ApronFrame),
   ChatRoom((ApronRoom,Vec<ApronFrame>)),
   ChatUser(ApronUser),
+  ChatId(ApronId),
   Id(u64),
   Text(String),
   Error(String),

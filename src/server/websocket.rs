@@ -1,26 +1,16 @@
-use crossbeam_channel::{unbounded,Receiver,Sender};
+use crossbeam_channel::{unbounded,Sender};
 use serde::Serialize;
-use std::{
-  fs,
-  io::ErrorKind,
-  net::TcpStream,
-  str::FromStr,
-  thread,
-  time::Duration,
-};
-use tiny_http::{Header,ReadWrite,Request,Response,StatusCode};
+use tiny_http::ReadWrite;
 use tungstenite::{
-  protocol::Role,
   Error,
   Message,
   WebSocket,
 };
-use url::Url;
 
 use super::Server;
 
 use crate::apron::*;
-use super::protocol::*;
+use crate::protocol::*;
 
 ///////////// Server
 
@@ -109,8 +99,8 @@ impl Server {
             ApronFrame::Me { name, avatar } => {
               if let Some(id) = id {
                 if let Some(mut user) = you.clone() {
-                  if let Some(ref name)   = name { user.name = Some(name.clone()) }
-                  if let Some(ref avatar) = name { user.avatar = Some(avatar.clone()) }
+                  if let Some(name)   = name { user.name = Some(name.clone()) }
+                  if let Some(avatar) = avatar { user.avatar = Some(avatar.clone()) }
                   let (tx,rx) = unbounded::<ServerResponse>();
                   let update_user = ServerRequest {
                     command: "update_user".to_string(),

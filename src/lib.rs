@@ -1,8 +1,9 @@
 pub mod init;
 pub mod logger;
 
-pub mod collections;
 pub mod apron;
+pub mod collections;
+pub mod protocol;
 
 pub(crate) mod config;
 pub(crate) mod defaults;

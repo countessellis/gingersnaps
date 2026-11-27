@@ -2,7 +2,7 @@ use std::collections::HashMap;
 
 use crate::util;
 
-use crate::collections::{Config,ConfigFlag,Configurator};
+use crate::collections::config::*;
 
 use crate::defaults::*;
 

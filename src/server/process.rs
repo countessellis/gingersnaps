@@ -1,9 +1,7 @@
-use crossbeam_channel::{unbounded,Receiver,Sender};
+use crossbeam_channel::{Receiver,Sender};
 use std::{
-  fs,
   str::FromStr,
   thread,
-  time::Duration,
 };
 use tiny_http::{Header,Request,Response,StatusCode};
 use tungstenite::{
@@ -14,14 +12,14 @@ use url::Url;
 
 use super::Server;
 
-use super::protocol::*;
+use crate::protocol::*;
 use crate::defaults::*;
 
 ///////////// Server
 
 impl Server {
   pub(crate) fn process(incoming: &Receiver<Request>, server: &Sender<ServerRequest>) {
-    for mut request in incoming.iter() {
+    for request in incoming.iter() {
       if let Some(remote) = request.remote_addr() {
         log::debug!("Received connection from {}:{}",remote.ip(),remote.port());
         let base_url = Url::parse("http://localhost").unwrap();
@@ -29,7 +27,6 @@ impl Server {
           let path = parsed_url.path().to_string();
           log::info!("Request received for on {}",path);
           thread::spawn({
-            let remote = remote.clone();
             let server = server.clone();
             move || {
               let is_ws_upgrade = request.method() == &tiny_http::Method::Get && request.headers().iter().any(|header| header.field.equiv("Upgrade") && header.value.as_str().eq_ignore_ascii_case("websocket"));
