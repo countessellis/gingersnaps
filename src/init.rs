@@ -10,8 +10,6 @@ use crate::version::*;
 ///////////// Run
 
 pub fn run() {
-  println!("{}",splash());
-  println!("{}",version());
   log::info!("{}",version());
   let config: Config = config::init();
   log::info!("{}",config);
@@ -19,6 +17,8 @@ pub fn run() {
   match mode {
     Mode::Server => {
       match Server::new(&config) {
+        println!("{}",splash());
+        println!("{}",version());
         Ok(mut server) => {
           server.listen();
         },
