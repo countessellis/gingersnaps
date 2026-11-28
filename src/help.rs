@@ -18,9 +18,12 @@ impl fmt::Display for Help {
   fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
     let details: Vec<String> = vec![
       format!("  --mode <MODE>                        Mode to run in (default: {}, choices: {})",DEFAULT_MODE,MODE_LIST.join(", ")),
+      format!(""),
       format!("  --cache_dir <DIR>                    Cache directory (default: {})",DEFAULT_CACHE_DIR),
       format!("  --listen_addr <ADDR>                 IP address and port to listen on (default: {})",DEFAULT_LISTEN_ADDR),
+      format!(""),
       format!("  --help                               Display this help message"),
+      format!("  --version                            Display version"),
     ];
     let fields: Fields = Fields::new(&HashMap::from([
       ("RUNAS",self.config.get("ranas")),

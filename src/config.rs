@@ -19,6 +19,9 @@ pub(crate) fn init() -> Config {
     ignore: vec![
       "--server".to_string(),
       "--help".to_string(),
+      "-h".to_string(),
+      "--version".to_string(),
+      "-V".to_string(),
     ],
     flags: HashMap::new(),
   };
