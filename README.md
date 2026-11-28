@@ -26,8 +26,8 @@ Options:
   --cache_dir <DIR>                    Cache directory (default: cache)
   --listen_addr <ADDR>                 IP address and port to listen on (default: 0.0.0.0:17187)
 
-  --help                               Display this help message
-  --version                            Display version
+  --help | -h                          Display this help message
+  --version | -V                       Display version
 ```
 
 ---

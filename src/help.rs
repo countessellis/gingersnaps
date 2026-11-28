@@ -22,8 +22,8 @@ impl fmt::Display for Help {
       format!("  --cache_dir <DIR>                    Cache directory (default: {})",DEFAULT_CACHE_DIR),
       format!("  --listen_addr <ADDR>                 IP address and port to listen on (default: {})",DEFAULT_LISTEN_ADDR),
       format!(""),
-      format!("  --help                               Display this help message"),
-      format!("  --version                            Display version"),
+      format!("  --help | -h                          Display this help message"),
+      format!("  --version | -V                       Display version"),
     ];
     let fields: Fields = Fields::new(&HashMap::from([
       ("RUNAS",self.config.get("ranas")),
